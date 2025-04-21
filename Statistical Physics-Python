@@ -70,3 +70,500 @@ ax[2, 1].plot(KbT[:N - 1], S)
 ax[2, 1].set_title('Entropy')
 ax[2, 1].grid(True)
 plt.tight_layout()
+
+
+
+
+
+
+'''Assignment 02: Calculating and plotting thermodynamic properties (partition function, internal energy, specific heat, energy fluctuation Helmholtz free energy, and entropy) of a n-level system as a function of KbT.
+Date: 08-03-2025'''
+
+#Importing Libraries
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Defining Constants
+Kb = 8.6e-5
+
+#Defining System Parameters
+eps = 1 ; N_levels = 12
+T0 = 100.0 ; Tn = 10000.0 ; N = 500
+T = np.linspace(T0, Tn, N)
+KbT = Kb * T
+
+#Calculating the Partition Function
+def Partition_Function(KT):
+  Z_MB = 0
+  for k in range(1,N_levels):
+    Z_MB = Z_MB + np.exp(-eps*k/KT)
+  return Z_MB
+
+Z = Partition_Function(KbT)
+lnZ = np.log(Z)
+
+#Calculating Internal Energy
+U = []
+for i in range(0, N-1):
+  U.append(Kb*T[i]**2*((lnZ[i+1]-lnZ[i])/(T[i+1]-T[i])))
+
+#Calulating Specific Heat
+Cv = []
+for i in range(0, N-2):
+  Cv.append((U[i+1]-U[i])/(T[i+1]-T[i]))
+
+#Calculating Energy Fluctuation
+delE = []
+for i in range(0, N-2):
+  delE.append(np.sqrt(KbT[i]**2*Cv[i]))
+
+#Calculating Helmholtz Free Energy
+F = []
+for i in range(0, N):
+  F.append(-KbT[i]*lnZ[i])
+
+#Calculating Entropy
+S = []
+for i in range(0, N-1):
+  S.append(-((F[i+1]-F[i])/(T[i+1]-T[i])))
+
+# Plotting the Results
+print("Thermodynamic Potentials as Function of KbT".center(100))
+fig, ax = plt.subplots(3, 2, figsize=(8, 8))
+ax[0, 0].plot(KbT[:N], Z)
+ax[0, 0].set_title('Partition Function')
+ax[0, 0].grid(True)
+ax[0, 1].plot(KbT[:N - 1], U)
+ax[0, 1].set_title('Internal Energy')
+ax[0, 1].grid(True)
+ax[1, 0].plot(KbT[:N - 2], Cv)
+ax[1, 0].set_title('Specific Heat')
+ax[1, 0].grid(True)
+ax[1, 1].plot(KbT[:N - 2], delE)
+ax[1, 1].set_title('Energy Fluctuations')
+ax[1, 1].grid(True)
+ax[2, 0].plot(KbT[:N], F)
+ax[2, 0].set_title('Helmholtz Free Energy')
+ax[2, 0].grid(True)
+ax[2, 1].plot(KbT[:N - 1], S)
+ax[2, 1].set_title('Entropy')
+ax[2, 1].grid(True)
+plt.tight_layout()
+
+
+
+
+
+
+
+'''Assignment 03: Calculating and plotting thermodynamic properties (partition function, internal energy, specific heat, entropy, Helmholtz free energy) Date: 28-03-2025'''
+
+#Importing Libraries
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Defining Constants
+Kb = 8.6e-5
+
+#Defining System Parameters
+eps = 1 ; N_levels = 12
+T0 = 100.0 ; Tn = 10000.0 ; N = 500
+T = np.linspace(T0, Tn, N)
+KbT = Kb * T
+
+#Calculating the Partition Function
+def Partition_Function(KT):
+  Z_MB = 0
+  for k in range(1,N_levels):
+    Z_MB = Z_MB + np.exp(-k/KT)
+  return Z_MB * np.exp(0.5/KT)
+
+Z = Partition_Function(KbT)
+lnZ = np.log(Z)
+
+#Calculating Internal Energy
+U = []
+for i in range(0, N-1):
+  U.append(Kb*T[i]**2*((lnZ[i+1]-lnZ[i])/(T[i+1]-T[i])))
+
+#Calulating Specific Heat
+Cv = []
+for i in range(0, N-2):
+  Cv.append((U[i+1]-U[i])/(T[i+1]-T[i]))
+
+#Calculating Energy Fluctuation
+delE = []
+for i in range(0, N-2):
+  delE.append(np.sqrt(KbT[i]**2*Cv[i]))
+
+#Calculating Helmholtz Free Energy
+F = []
+for i in range(0, N):
+  F.append(-KbT[i]*lnZ[i])
+
+#Calculating Entropy
+S = []
+for i in range(0, N-1):
+  S.append(-((F[i+1]-F[i])/(T[i+1]-T[i])))
+
+# Plotting the Results
+print("Thermodynamic Potentials as Function of KbT".center(100))
+fig, ax = plt.subplots(3, 2, figsize=(8, 8))
+ax[0, 0].plot(KbT[:N], Z)
+ax[0, 0].set_title('Partition Function')
+ax[0, 0].grid(True)
+ax[0, 1].plot(KbT[:N - 1], U)
+ax[0, 1].set_title('Internal Energy')
+ax[0, 1].grid(True)
+ax[1, 0].plot(KbT[:N - 2], Cv)
+ax[1, 0].set_title('Specific Heat')
+ax[1, 0].grid(True)
+ax[1, 1].plot(KbT[:N - 2], delE)
+ax[1, 1].set_title('Energy Fluctuations')
+ax[1, 1].grid(True)
+ax[2, 0].plot(KbT[:N], F)
+ax[2, 0].set_title('Helmholtz Free Energy')
+ax[2, 0].grid(True)
+ax[2, 1].plot(KbT[:N - 1], S)
+ax[2, 1].set_title('Entropy')
+ax[2, 1].grid(True)
+plt.tight_layout()
+
+
+
+
+
+
+
+
+'''Assignment 4: Calculating and plotting the Blackbody Radiation Spectrum using the Planck's Law and the Rayleigh-Jeans Law. Demonstrating how the two laws differ in their predictions, especially at higher frequencies.
+Date: 21-02-2025'''
+
+#Importing Libraries
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Constants
+h = 6.626e-34   # Planck constant (J·s)
+c = 3e8         # Speed of light (m/s)
+kB = 1.38e-23   # Boltzmann constant (J/K)
+
+# Planck's Law
+def planck(nu, T):
+    return (8 * np.pi * h * nu**3) / (c**3 * np.expm1(h * nu / (kB * T)))
+
+# Rayleigh-Jeans Law
+def rayleigh_jeans(nu, T):
+    return (8 * np.pi * nu**2 * kB * T) / c**3
+
+# Determining EM spectrum region
+def spectrum_region(nu):
+    if nu < 3e11:
+        return "Microwave"
+    elif nu < 4e14:
+        return "Infrared"
+    elif nu < 7.5e14:
+        return "Visible"
+    elif nu < 3e16:
+        return "Ultraviolet"
+    elif nu < 3e19:
+        return "X-rays"
+    else:
+        return "Gamma rays"
+
+# Frequency range (1 to 15 × 10^14 Hz)
+nu = np.linspace(1e12, 1.5e15, 10000)
+
+# Analyzing for both temperatures
+for T in [4000, 8000]:
+    U_planck = planck(nu, T)
+    U_rj = rayleigh_jeans(nu, T)
+
+    # Max frequency for Planck
+    idx_p = np.argmax(U_planck)
+    nu_p = nu[idx_p]
+    region_p = spectrum_region(nu_p)
+
+    # Max frequency for Rayleigh-Jeans
+    idx_rj = np.argmax(U_rj)
+    nu_rj = nu[idx_rj]
+    region_rj = spectrum_region(nu_rj)
+
+    #Printing
+    print(f"\nT = {T} K:")
+    print(f"  Planck peak frequency: {nu_p:.2e} Hz ({region_p})")
+    print(f"  Rayleigh-Jeans peak frequency: {nu_rj:.2e} Hz ({region_rj})")
+
+    # Plotting
+    plt.figure(figsize=(8, 5))
+    plt.plot(nu, U_planck, label="Planck's Law", linewidth=2)
+    plt.plot(nu, U_rj, '--', label="Rayleigh-Jeans Law", linewidth=2)
+    plt.axvline(nu_p, color='r', linestyle=':', label=f'ν_max Planck = {nu_p:.2e} Hz')
+    plt.axvline(nu_rj, color='g', linestyle=':', label=f'ν_max RJ = {nu_rj:.2e} Hz')
+    plt.title(f"Blackbody Radiation at T = {T} K")
+    plt.xlabel("Frequency (Gz)")
+    plt.ylabel("Spectral Energy Density")
+    plt.ylim(0, np.max(U_planck)*6.5)
+    plt.legend()
+    plt.grid(True)
+    plt.tight_layout()
+    plt.show()
+
+
+
+
+
+
+
+
+'''Assignment 5: Finding the Frequency where Rayleigh-Jeans and Planck's Law Diverge.
+Date: 21-02-2025'''
+
+# Importing Libraries
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Constants
+h = 6.626e-34    # Planck constant (J·s)
+c = 3e8          # Speed of light (m/s)
+kB = 1.38e-23    # Boltzmann constant (J/K)
+
+# Planck's Law
+def planck(nu, T):
+    return (8 * np.pi * h * nu**3) / (c**3 * np.expm1(h * nu / (kB * T)))
+
+# Rayleigh-Jeans Law
+def rayleigh_jeans(nu, T):
+    return (8 * np.pi * nu**2 * kB * T) / c**3
+
+# Temperature
+T = 300  # Kelvin
+
+# Frequency range
+nu_vals = np.linspace(1, 15 * kB * T / h, 100000)
+
+# Energy densities
+U_planck = planck(nu_vals, T)
+U_rj = rayleigh_jeans(nu_vals, T)
+
+# Relative difference
+relative_diff = np.abs(U_planck - U_rj) / U_planck
+
+# Finding minimum frequency where relative difference exceeds 10%
+mask = relative_diff >= 0.1
+if np.any(mask):
+    nu_min_diff = nu_vals[mask][0]
+    print(f"Minimum frequency where |ΔU|/U_planck ≥ 0.1 at T = {T} K: {nu_min_diff:.2e} Hz")
+else:
+    print("No frequency found where the relative difference exceeds 10%.")
+
+# Plotting
+plt.figure(figsize=(12, 6))
+
+# Plot energy densities
+plt.subplot(1, 2, 1)
+plt.plot(nu_vals, U_planck, label='Planck\'s Law', color='blue')
+plt.plot(nu_vals, U_rj, label='Rayleigh-Jeans Law', color='red')
+plt.axvline(x=nu_min_diff, color='green', linestyle=':', label='10% Difference Threshold')
+plt.xlabel('Frequency (Hz)')
+plt.ylabel('Spectral Energy Density')
+plt.xlim(0, 2.5e12)  # 2 THz
+plt.ylim(0, np.max(U_planck)*0.1)
+plt.title(f'Planck vs Rayleigh-Jeans at T = {T} K')
+plt.legend()
+plt.grid(True)
+plt.tight_layout()
+plt.show()
+
+
+'''Assignment 6: Calculating and plotting the total energy in the visible spectrum of blackbody radiation as a function of temperature.
+Date: 21-02-2025'''
+
+#Importing Libraries
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy.integrate import simpson  # Correct import
+
+# Constants
+h = 6.626e-34    # Planck constant (J·s)
+c = 3e8          # Speed of light (m/s)
+kB = 1.38e-23    # Boltzmann constant (J/K)
+
+# Planck's Law
+def planck(nu, T):
+    return (8 * np.pi * h * nu**3) / (c**3 * np.expm1(h * nu / (kB * T)))
+
+# Visible spectrum frequency range
+nu_min = 4e14  # Hz
+nu_max = 7.5e14  # Hz
+nu_vals = np.linspace(nu_min, nu_max, 1000)
+
+# Temperature range
+T_vals = np.arange(100, 400, 5)
+visible_energy = []
+
+# Calculating integrated energy in visible spectrum for each T
+for T in T_vals:
+    U = planck(nu_vals, T)
+    energy = simpson(U, x=nu_vals)
+    visible_energy.append(energy)
+
+# Plotting
+plt.figure(figsize=(8, 5))
+plt.plot(T_vals, visible_energy, label="Visible Spectrum Energy", color='darkorange')
+plt.title("Total Energy in Visible Spectrum vs Temperature")
+plt.xlabel("Temperature (K)")
+plt.ylabel("Integrated Energy Density (J/m³)")
+plt.grid(True)
+plt.legend()
+plt.tight_layout()
+plt.show()
+
+
+
+
+
+
+
+'''Assignment 7: Calculates and plotting the specific heat of a solid as a function of temperature using three different models: the Dulong-Petit law, the Einstein model, and the Debye model. Date: 08-03-2025'''
+
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy.integrate import simpson
+
+# Constants
+k_B = 1.38e-23
+R = 8.314
+
+# Temperature range
+T = np.linspace(1, 500, 500)
+C_dp = np.full_like(T, 3 * R)  # Dulong-Petit law
+
+# Einstein model
+def einstein_cv(T, theta_E):
+    x = theta_E / T
+    ex = np.exp(x)
+    return 3 * R * (x**2 * ex) / (ex - 1)**2
+
+# Debye model using Simpson's rule
+def debye_cv(T, theta_D):
+    C = []
+    for temp in T:
+        x_vals = np.linspace(1e-5, theta_D / temp, 500)
+        integrand = (x_vals**4 * np.exp(x_vals)) / (np.exp(x_vals) - 1)**2
+        integral = simpson(integrand, x=x_vals)
+        C.append(9 * R * (temp / theta_D)**3 * integral)
+    return np.array(C)
+
+# Temperatures
+theta_E_values = [100, 200, 300]
+theta_D_values = [100, 200, 300]
+
+# Compute specific heats
+C_einstein = [einstein_cv(T, theta_E) for theta_E in theta_E_values]
+C_debye = [debye_cv(T, theta_D) for theta_D in theta_D_values]
+
+# Colors for matching pairs
+colors = ['tab:blue', 'tab:orange', 'tab:green']
+
+# Plotting
+plt.figure(figsize=(8, 6))
+plt.plot(T, C_dp, 'k:', label='Dulong-Petit Law')
+
+for i, theta_E in enumerate(theta_E_values):
+    plt.plot(T, C_einstein[i], label=f'Einstein (θₑ={theta_E}K)', linestyle='solid', color=colors[i])
+
+for i, theta_D in enumerate(theta_D_values):
+    plt.plot(T, C_debye[i], label=f'Debye (θ_D={theta_D}K)', linestyle='dashed', color=colors[i])
+
+plt.xlabel("Temperature (T) [K]")
+plt.ylabel("Specific Heat (Cᵥ) [J/mol·K]")
+plt.title("Specific Heat vs Temperature")
+plt.legend()
+plt.grid(True)
+plt.tight_layout()
+plt.show()
+
+
+
+
+
+
+
+
+
+
+'''Assignment 8: calculating and plotting three different statistical distributions in physics: Maxwell-Boltzmann, Fermi-Dirac, and Bose-Einstein.
+Date: 28-03-2025
+'''
+
+#Importing Libraries
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Constants
+Kb = 8.62e-5  # eV/K (Boltzmann constant)
+
+# Energy range (in eV)
+E = np.linspace(0, 2, 300)
+
+# Temperature range (in K)
+temperatures = [500, 1000, 5000]
+
+# Chemical potentials (chosen suitable for each case)
+mu_MB = 0.0
+mu_FD = 0.5
+mu_BE = 0.5
+
+# Maxwell-Boltzmann Distribution
+def MB(E, mu, T):
+    x = (E - mu) / (Kb * T)
+    return np.exp(-x)
+
+# Fermi-Dirac Distribution
+def FD(E, mu, T):
+    x = (E - mu) / (Kb * T)
+    return 1.0 / (np.exp(x) + 1)
+
+# Bose-Einstein Distribution
+def BE(E, mu, T):
+    x = (E - mu) / (Kb * T)
+    return 1.0 / (np.exp(x) - 1)
+
+# Plot MB
+plt.figure(figsize=(8, 5))
+for T in temperatures:
+    plt.plot(E, MB(E, mu_MB, T), label=f"T = {T} K")
+plt.title("Maxwell-Boltzmann Distribution")
+plt.xlabel("Energy (eV)")
+plt.ylabel("f_MB(E)")
+#plt.ylim(0, 1.2)
+plt.legend()
+plt.grid(True)
+plt.show()
+
+# Plot FD
+plt.figure(figsize=(8, 5))
+for T in temperatures:
+    plt.plot(E, FD(E, mu_FD, T), label=f"T = {T} K")
+plt.title("Fermi-Dirac Distribution")
+plt.xlabel("Energy (eV)")
+plt.ylabel("f_FD(E)")
+plt.legend()
+plt.grid(True)
+plt.show()
+
+# Plot BE
+plt.figure(figsize=(8, 5))
+for T in temperatures:
+     plt.plot(E, BE(E, mu_BE, T), label=f"T = {T} K")
+plt.title("Bose-Einstein Distribution")
+plt.xlabel("Energy (eV)")
+plt.ylabel("f_BE(E)")
+plt.legend()
+plt.grid(True)
+plt.show()
+
+
+
+
