@@ -1,0 +1,112 @@
+'''Solve 1-dimensional time-independent Schroedinger Equation (TISE) for
+particle in 1D box'''
+
+import numpy as np
+from scipy.integrate import odeint, simps
+from scipy.optimize import bisect
+import matplotlib.pyplot as plt
+
+def V(x):
+    return 0
+
+L, m, hbar,  E0, En = 10, 1, 1,  0.001, 5
+Erange = np.arange(E0, En, 0.01)
+x = np.linspace(0, L, 100)
+u = [0, 0.01]
+
+def f(u, x, E):
+    y, z = u
+    f1, f2 = z, ((2*m)/(hbar)**2)*(V(x) -E)*y
+    return (f1, f2)
+
+#Calculate psi(L)
+def psiboundval(E):
+    sol = odeint(f, u, x, args = (E, ))
+    return sol[:, 0][-1]
+
+#Identify eigenvalues (where psi(L) crosses zero)
+Y = np.array([psiboundval(E) for E in Erange])
+plt.plot(Erange, Y, label="$\Psi(L)$")
+plt.axhline(0, color='black', linestyle='--', label=" $\Psi(L)$=0")
+plt.ylabel("$\Psi(L)$")
+plt.xlabel("$E$")
+plt.title("$\Psi(L) vs. E$")
+plt.legend()
+
+plt.show()
+
+# Determine eigenvalues by Bisection method
+En = []
+for i in range(len(Y) - 1):
+    if np.sign(Y[i]) != np.sign(Y[i + 1]):  # Check for sign change
+        E_eigen = bisect(psiboundval, Erange[i], Erange[i + 1])
+        En.append(E_eigen)
+print("Energy Eigen Values:", np.round(En,4))
+
+def normalize(E):
+  sol = odeint(f,u,x,args=(E,))
+  y = sol[:,0]
+  N = np.sqrt(simps(y**2,x))
+  return y / N
+
+wavefunctions = [normalize(E) for E in En]
+plt.plot(x,y**2)
+
+plt.title("Probability")
+plt.xlabel("Position x")
+plt.ylabel("Probability density $|\psi(x)^2|$")
+plt.legend()
+plt.grid()
+plt.show()
+
+
+                 
+
+
+
+
+#Assignment 4:
+'''Solve 1-dimensional time-independent Schroedinger Equation (TISE) for
+particle in 1D box Shooting Method '''
+
+import numpy as np
+from scipy.integrate import odeint
+from scipy.optimize import bisect
+import matplotlib.pyplot as plt
+
+def V(x):
+    return 0
+
+L, m, hbar, w, E0, En = 10, 1, 1, 1, 0.001, 5
+E_range = np.arange(E0, En, 0.01)
+x = np.linspace(0, L, 100)
+u = [0, 0.01]
+
+def f(u, x, E):
+    y, z = u
+    f1, f2 = z, ((2*m)/(hbar)**2)*(V(x) -E)*y
+    return (f1, f2)
+
+#Calculate psi(L)
+def psiboundval(E):
+    sol = odeint(f, u, x, args = (E, ))
+    return sol[:, 0][-1]
+
+#Identify eigenvalues (where psi(L) crosses zero)
+Y = np.array([psiboundval(E) for E in E_range])
+plt.plot(E_range, Y, label="$\Psi(L)$")
+plt.axhline(y=0, color='red', linestyle='--', label="Boundary Condition $\Psi(L)$=0")
+plt.ylabel(r"$\Psi(L)$")
+plt.xlabel(r"$E$")
+plt.title(r"$\Psi(L) vs. E$")
+plt.legend()
+plt.savefig("plot.png")
+plt.show()
+
+# Determine eigenvalues by Bisection method
+En = []
+for i in range(len(Y) - 1):
+    if np.sign(Y[i]) != np.sign(Y[i + 1]):  # Check for sign change
+        E_eigen = bisect(psiboundval, E_range[i], E_range[i + 1])
+        En.append(E_eigen)
+print("Energy Eigen Values:", np.round(En,4))
