@@ -1,1 +1,72 @@
+'''Assignment 01: Calculating and plotting thermodynamic properties (partition function, internal energy, specific heat, energy fluctuation Helmholtz free energy,
+and entropy) of a two level system as a function of KbT.
+Date: 07-03-2025 '''
 
+#Importing Libraries
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Defining Constants
+Kb = 8.6e-5
+
+#Defining System Parameters
+eps1 = 1 ; eps2 = 2 * eps1
+T0 = 100.0 ; Tn = 10000.0; N = 500
+T = np.linspace(T0, Tn, N)
+KbT = Kb * T
+
+#Calculating the Partition Function
+def Partition_Function(KT):
+   z = np.exp(-eps1/KT) + np.exp(-eps2/KT)
+   return z
+
+Z = Partition_Function(KbT)
+lnZ = np.log(Z)
+
+#Calculating Internal Energy
+U = []
+for i in range(0, N-1):
+  U.append(Kb*T[i]**2*((lnZ[i+1]-lnZ[i])/(T[i+1]-T[i])))
+
+#Calulating Specific Heat
+Cv = []
+for i in range(0, N-2):
+  Cv.append((U[i+1]-U[i])/(T[i+1]-T[i]))
+
+#Calculating Energy Fluctuation
+delE = []
+for i in range(0, N-2):
+  delE.append(np.sqrt(KbT[i]**2*Cv[i]))
+
+#Calculating Helmholtz Free Energy
+F = []
+for i in range(0, N):
+  F.append(-KbT[i]*lnZ[i])
+
+#Calculating Entropy
+S = []
+for i in range(0, N-1):
+  S.append(-((F[i+1]-F[i])/(T[i+1]-T[i])))
+
+# Plotting the Results
+print("Thermodynamic Potentials as Function of KbT".center(100))
+fig, ax = plt.subplots(3, 2, figsize=(8, 8))
+ax[0, 0].plot(KbT[:N], Z)
+ax[0, 0].set_title('Partition Function')
+ax[0, 0].grid(True)
+ax[0, 1].plot(KbT[:N - 1], U)
+ax[0, 1].set_title('Internal Energy')
+ax[0, 1].grid(True)
+ax[1, 0].plot(KbT[:N - 2], Cv)
+ax[1, 0].set_title('Specific Heat')
+ax[1, 0].grid(True)
+ax[1, 1].plot(KbT[:N - 2], delE)
+ax[1, 1].set_title('Energy Fluctuations')
+ax[1, 1].grid(True)
+ax[2, 0].plot(KbT[:N], F)
+ax[2, 0].set_title('Helmholtz Free Energy')
+ax[2, 0].grid(True)
+ax[2, 1].plot(KbT[:N - 1], S)
+ax[2, 1].set_title('Entropy')
+ax[2, 1].grid(True)
+plt.tight_layout()
